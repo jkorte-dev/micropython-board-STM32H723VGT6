@@ -30,4 +30,4 @@ credits to:
 - ST7735 display driver (pure python) from boochow [MicroPython-ST7735](https://github.com/boochow/MicroPython-ST7735)
 
 ## change log
-15.01.2024 initial version
+15.01.2024 initial version.

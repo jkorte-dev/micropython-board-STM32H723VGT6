@@ -45,7 +45,7 @@ spi_bdev_t spi_bdev;
 
 STATIC mp_spiflash_cache_t spi_bdev_cache;
 
-//  Hardware SPI current not working
+//  Hardware SPI currently not working
 /*
 STATIC const spi_proto_cfg_t spi_bus = {
     .spi = &spi_obj[0], // SPI1 hardware peripheral
