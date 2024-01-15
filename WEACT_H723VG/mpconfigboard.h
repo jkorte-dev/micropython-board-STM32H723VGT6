@@ -163,17 +163,9 @@
 
 
 #if !MICROPY_HW_ENABLE_INTERNAL_FLASH_STORAGE
-#define WEACT_USE_QSPI_FLASH_STORAGE  (1) // QUAD-SPI (1) or normal SPI (0)
+#define WEACT_USE_QSPI_FLASH_STORAGE             (1) // QUAD-SPI (1) or normal SPI (0)
 
-#if !WEACT_USE_QSPI_FLASH_STORAGE
-
-// SPI Flash 64MBits on SPI1
-#define MICROPY_HW_SPIFLASH_SIZE_BITS (64 * 1024 * 1024) // 8MB external flash
-#define MICROPY_HW_SPIFLASH_CS      (MICROPY_HW_SPI1_NSS)  // (pin_D6)
-#define MICROPY_HW_SPIFLASH_SCK     (MICROPY_HW_SPI1_SCK)  // (pin_B3)
-#define MICROPY_HW_SPIFLASH_MISO    (MICROPY_HW_SPI1_MISO) // (pin_B4)
-#define MICROPY_HW_SPIFLASH_MOSI    (MICROPY_HW_SPI1_MOSI) // (pin_D7)
-
+#define MICROPY_HW_SPIFLASH_SIZE_BITS            (64 * 1024 * 1024) // 8MB external flash
 #define MICROPY_HW_SPIFLASH_ENABLE_CACHE         (1)
 
 extern const struct _mp_spiflash_config_t spiflash_config;
@@ -183,10 +175,9 @@ extern struct _spi_bdev_t spi_bdev;
 #define MICROPY_HW_BDEV_SPIFLASH_SIZE_BYTES (MICROPY_HW_SPIFLASH_SIZE_BITS / 8)
 #define MICROPY_HW_BDEV_SPIFLASH_EXTENDED (&spi_bdev) // for extended block protocol
 
-#else
-// QSPI Flash 64MBits
+#if WEACT_USE_QSPI_FLASH_STORAGE
 // OCTOSPI in dual QSPI mode (needs mod in stm32h723_af.csv and patch in octospi.c
-#define MICROPY_HW_OSPIFLASH_SIZE_BITS_LOG2 (26)
+//#define MICROPY_HW_OSPIFLASH_SIZE_BITS_LOG2 (26) // HW OCTOSPI/QSPI disabled
 #define MICROPY_HW_OSPIFLASH_CS             (pin_B6)
 #define MICROPY_HW_OSPIFLASH_SCK            (pin_B2)
 #define MICROPY_HW_OSPIFLASH_IO0            (pin_D11)
@@ -198,25 +189,12 @@ extern struct _spi_bdev_t spi_bdev;
 //#define MICROPY_HW_OSPIFLASH_IO6            (pin_E9) //C3
 //#define MICROPY_HW_OSPIFLASH_IO7            (pin_E10)  //?
 
-// QSPI version does not compile
-//#define MICROPY_HW_QSPIFLASH_SIZE_BITS   (64 * 1024 * 1024)
-//#define MICROPY_HW_QSPIFLASH_SIZE_BITS_LOG2 (26)
-//#define MICROPY_HW_QSPIFLASH_CS         (pin_B6)
-//#define MICROPY_HW_QSPIFLASH_SCK        (pin_B2)
-//#define MICROPY_HW_QSPIFLASH_IO0        (pin_D11)
-//#define MICROPY_HW_QSPIFLASH_IO1        (pin_D12)
-//#define MICROPY_HW_QSPIFLASH_IO2        (pin_E2)
-//#define MICROPY_HW_QSPIFLASH_IO3        (pin_D13)
-
-#define MICROPY_HW_SPIFLASH_ENABLE_CACHE         (1)
-
-extern const struct _mp_spiflash_config_t spiflash_config;
-extern struct _spi_bdev_t spi_bdev;
-#define MICROPY_HW_BDEV_SPIFLASH    (&spi_bdev)
-#define MICROPY_HW_BDEV_SPIFLASH_CONFIG (&spiflash_config)
-//#define MICROPY_HW_BDEV_SPIFLASH_SIZE_BYTES (MICROPY_HW_SPIFLASH_SIZE_BITS / 8)
-#define MICROPY_HW_BDEV_SPIFLASH_SIZE_BYTES ((1 << MICROPY_HW_OSPIFLASH_SIZE_BITS_LOG2) / 8)
-#define MICROPY_HW_BDEV_SPIFLASH_EXTENDED (&spi_bdev) // for extended block protocol
+#else
+// SPI Flash 64MBits on SPI1
+#define MICROPY_HW_SPIFLASH_CS      (MICROPY_HW_SPI1_NSS)  // (pin_D6)
+#define MICROPY_HW_SPIFLASH_SCK     (MICROPY_HW_SPI1_SCK)  // (pin_B3)
+#define MICROPY_HW_SPIFLASH_MISO    (MICROPY_HW_SPI1_MISO) // (pin_B4)
+#define MICROPY_HW_SPIFLASH_MOSI    (MICROPY_HW_SPI1_MOSI) // (pin_D7)
 #endif
 
 #endif

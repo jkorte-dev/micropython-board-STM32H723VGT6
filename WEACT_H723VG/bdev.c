@@ -21,21 +21,13 @@ STATIC const mp_soft_qspi_obj_t soft_qspi_bus = {
     .io1 = MICROPY_HW_OSPIFLASH_IO1,
     .io2 = MICROPY_HW_OSPIFLASH_IO2,
     .io3 = MICROPY_HW_OSPIFLASH_IO3,
-/*
-    .cs  = MICROPY_HW_QSPIFLASH_CS,
-    .clk = MICROPY_HW_QSPIFLASH_SCK,
-    .io0 = MICROPY_HW_QSPIFLASH_IO0,
-    .io1 = MICROPY_HW_QSPIFLASH_IO1,
-    .io2 = MICROPY_HWQSPIFLASH_IO2,
-    .io3 = MICROPY_HW_QSPIFLASH_IO3,
-*/
 };
 
 // First external SPI flash uses software QSPI interface
 const mp_spiflash_config_t spiflash_config = {
     .bus_kind = MP_SPIFLASH_BUS_QSPI,
     .bus.u_qspi.data = (void *)&soft_qspi_bus, // NULL for HW QSPI
-    .bus.u_qspi.proto = &mp_soft_qspi_proto,   //  &qspi_proto for HW QSPI
+    .bus.u_qspi.proto = &mp_soft_qspi_proto,   //  &octospi_proto for HW QSPI
     #if MICROPY_HW_SPIFLASH_ENABLE_CACHE
     .cache = &spi_bdev_cache,
     #endif
@@ -79,8 +71,8 @@ STATIC const mp_soft_spi_obj_t soft_spi_bus = {
 const mp_spiflash_config_t spiflash_config = {
     .bus_kind = MP_SPIFLASH_BUS_SPI,
     .bus.u_spi.cs = MICROPY_HW_SPIFLASH_CS,
-    .bus.u_spi.data = (void *)&soft_spi_bus,  // alternativ &spi_bus
-    .bus.u_spi.proto = &mp_soft_spi_proto,    // &spi_proto
+    .bus.u_spi.data = (void *)&soft_spi_bus,
+    .bus.u_spi.proto = &mp_soft_spi_proto,
     .cache = &spi_bdev_cache,
 };
 
