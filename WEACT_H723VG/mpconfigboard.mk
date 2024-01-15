@@ -8,6 +8,12 @@ AF_FILE = boards/stm32h723_af.csv
 LD_FILES = boards/stm32h723.ld boards/common_basic.ld
 TEXT0_ADDR = 0x08000000
 
+ifeq ($(BOARD_VARIANT),OCTOSPI)
+# Configure mpconfigboard.h.
+CFLAGS += -DWEACT_USE_OCTOSPI
+AF_FILE = $(BOARD_DIR)/stm32h723_af.csv
+endif
+
 # MicroPython settings
 MICROPY_VFS_LFS2 = 1
 

@@ -11,7 +11,7 @@
 //#define MICROPY_HW_ENABLE_I2S       (1) // does not compile likely error in dma.c (works for F7)
 //#define MICROPY_HW_ENABLE_USB       (1) // not here, see usb section
 #define MICROPY_HW_ENABLE_SDCARD    (1)
-//#define MICROPY_HW_ENABLE_MMCARD    (1) // does not compile
+#define MICROPY_HW_ENABLE_MMCARD    (0)
 #define MICROPY_HW_ENABLE_CAN       (1)
 #define MICROPY_HW_ENABLE_FDCAN     (1)
 #define MICROPY_HW_HAS_SWITCH       (1)
@@ -177,7 +177,9 @@ extern struct _spi_bdev_t spi_bdev;
 
 #if WEACT_USE_QSPI_FLASH_STORAGE
 // OCTOSPI in dual QSPI mode (needs mod in stm32h723_af.csv and patch in octospi.c
-//#define MICROPY_HW_OSPIFLASH_SIZE_BITS_LOG2 (26) // HW OCTOSPI/QSPI disabled
+#ifdef WEACT_USE_OCTOSPI
+#define MICROPY_HW_OSPIFLASH_SIZE_BITS_LOG2 (26) // HW OCTOSPI/QSPI
+#endif
 #define MICROPY_HW_OSPIFLASH_CS             (pin_B6)
 #define MICROPY_HW_OSPIFLASH_SCK            (pin_B2)
 #define MICROPY_HW_OSPIFLASH_IO0            (pin_D11)

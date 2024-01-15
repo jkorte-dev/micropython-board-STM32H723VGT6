@@ -1,5 +1,5 @@
 #include "spi.h"
-#include "qspi.h"
+#include "octospi.h"
 #include "storage.h"
 #include "py/obj.h"
 
@@ -13,7 +13,7 @@ STATIC mp_spiflash_cache_t spi_bdev_cache;
 #endif
 
 // First external SPI flash uses software QSPI interface
-
+#ifndef WEACT_USE_OCTOSPI
 STATIC const mp_soft_qspi_obj_t soft_qspi_bus = {
     .cs  = MICROPY_HW_OSPIFLASH_CS,
     .clk = MICROPY_HW_OSPIFLASH_SCK,
@@ -22,13 +22,19 @@ STATIC const mp_soft_qspi_obj_t soft_qspi_bus = {
     .io2 = MICROPY_HW_OSPIFLASH_IO2,
     .io3 = MICROPY_HW_OSPIFLASH_IO3,
 };
+#endif
 
 // First external SPI flash uses software QSPI interface
 const mp_spiflash_config_t spiflash_config = {
     .bus_kind = MP_SPIFLASH_BUS_QSPI,
-    .bus.u_qspi.data = (void *)&soft_qspi_bus, // NULL for HW QSPI
-    .bus.u_qspi.proto = &mp_soft_qspi_proto,   //  &octospi_proto for HW QSPI
-    #if MICROPY_HW_SPIFLASH_ENABLE_CACHE
+    #ifdef WEACT_USE_OCTOSPI
+    .bus.u_qspi.data = NULL,
+    .bus.u_qspi.proto = &octospi_proto,
+    #else
+    .bus.u_qspi.data = (void *)&soft_qspi_bus,
+    .bus.u_qspi.proto = &mp_soft_qspi_proto,
+    #endif
+    #ifdef MICROPY_HW_SPIFLASH_ENABLE_CACHE
     .cache = &spi_bdev_cache,
     #endif
 };
