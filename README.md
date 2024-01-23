@@ -48,21 +48,21 @@ ln -s ../../../../micropython-board-STM32H723VGT6/WEACT_H723VG/ .
 make USER_C_MODULES=../../../st7789_mpy BOARD=WEACT_H723VG
 ```
 
-The experimental build with hardware octospi/qspi flash needs `VARIANT=OCTOSPI`
+The experimental build with hardware octospi/qspi flash needs `BOARD_VARIANT=OCTOSPI`
 and the modified `octospi.c` from the patch directory.
 ```
-make USER_C_MODULES=../../../st7789_mpy BOARD=WEACT_H723VG VARIANT=OCTOSPI
+make USER_C_MODULES=../../../st7789_mpy BOARD=WEACT_H723VG BOARD_VARIANT=OCTOSPI
 ```
-dfu-util is required to install the firmware with dfu method, which is described here.
+dfu-util is required to install the firmware with DFU method, which is described here.
 
 ```
-brew install dfu-util # mac
-sudo apt-get install dfu-util # linux
+brew install dfu-util stlink # mac
+sudo apt-get install dfu-util stlink# linux
 ```
 
 Before you can flash the board you have to put the board into DFU mode:
 Press the BOOT0 key and the reset key, then release the reset key, and release the BOOT0 key after 0.5 seconds.
-Verfify that the board is in dfu mode with:
+Verify that the board is in DFU mode with:
 
 ```
 dfu-util -l
@@ -73,13 +73,21 @@ To install to firmware execute
 dfu-util -a 0  -D build-WEACT_H723VG/firmware.dfu
 ```
 
+or if you prefer st-link
+
+```
+st-info --probe
+st-flash --format ihex write build-WEACT_H723VG/firmware.hex
+```
+
+
 
 ## Credits
 credits to:
 - The micropython team!
 - Russ Hughes for his great and fast display driver (in c) [st7789_mpy]( https://github.com/russhughes/st7789_mpy) 
 - brainelectronic for the flash driver [micropython-winbond](https://github.com/brainelectronics/micropython-winbond)
-- ST7735 display driver (pure python) from boochow [MicroPython-ST7735](https://github.com/boochow/MicroPython-ST7735)
+- boochow for the ST7735 display driver (pure python) [MicroPython-ST7735](https://github.com/boochow/MicroPython-ST7735)
 
 ## change log
 15.01.2024 initial version.
