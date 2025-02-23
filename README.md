@@ -13,6 +13,7 @@ Micropython Board Definition for WeAct Studio Board with STM32H723VGT6
 SPI flash works in soft spi mode only (both single and quad (octospi)). Octospi needs modification of octospi.c (see patch dir. I also modified stm32h723_af.csv to make it compile. This is just a temporary hack.
 To compile on unmodified micropython QSPI Flash has to be disabled (default).
 
+Compiles with v1.25 now, but without QSPI Flash.
 
 Supported features so far:
 
