@@ -9,12 +9,12 @@
 // QSPI Section
 #if MICROPY_HW_SPIFLASH_ENABLE_CACHE
 // Shared cache for first and second SPI block devices
-STATIC mp_spiflash_cache_t spi_bdev_cache;
+static mp_spiflash_cache_t spi_bdev_cache;
 #endif
 
 // First external SPI flash uses software QSPI interface
 #ifndef WEACT_USE_OCTOSPI
-STATIC const mp_soft_qspi_obj_t soft_qspi_bus = {
+static const mp_soft_qspi_obj_t soft_qspi_bus = {
     .cs  = MICROPY_HW_OSPIFLASH_CS,
     .clk = MICROPY_HW_OSPIFLASH_SCK,
     .io0 = MICROPY_HW_OSPIFLASH_IO0,
@@ -43,11 +43,11 @@ spi_bdev_t spi_bdev;
 
 #else //  normal SPI
 
-STATIC mp_spiflash_cache_t spi_bdev_cache;
+static mp_spiflash_cache_t spi_bdev_cache;
 
 //  Hardware SPI currently not working
 /*
-STATIC const spi_proto_cfg_t spi_bus = {
+static const spi_proto_cfg_t spi_bus = {
     .spi = &spi_obj[0], // SPI1 hardware peripheral
     .baudrate = 25000000,
     .polarity = 0,
@@ -65,7 +65,7 @@ const mp_spiflash_config_t spiflash_config = {
 */
 
 // Software SPI
-STATIC const mp_soft_spi_obj_t soft_spi_bus = {
+static const mp_soft_spi_obj_t soft_spi_bus = {
     .delay_half = MICROPY_HW_SOFTSPI_MIN_DELAY,
     .polarity = 0,
     .phase = 0,
@@ -85,3 +85,4 @@ const mp_spiflash_config_t spiflash_config = {
 spi_bdev_t spi_bdev;
 #endif
 #endif
+
